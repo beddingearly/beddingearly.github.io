@@ -1,0 +1,115 @@
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        <link href="../static/1.css" rel="stylesheet">
+        <script src="../static/jquery-3.3.1.js"></script>
+        <script src="../static/jquery-form.js"></script>
+        
+</head>
+<style type="text/css">
+	.menu {
+		display: inline-block;
+		color: #00000;
+		position:relative;
+		width:2000px;
+		height:127px;
+		z-index:1;
+		background: #FFF;
+		margin-top:20px;
+		ertical-align: baseline;
+	}
+</style>
+<body>
+	<div class="menu", id="list" align="center">
+		<input type="file" name="uploadfile" id='uploadfile' onclick="uploadfile()"/><br>
+		<textarea class="test" id="test" ></textarea>
+		
+		<div id="head">
+			<p>This is a List</p>
+		</div><br>
+
+		<input id="car" type="checkbox" name="车辆" value="车">北斗<br>
+		<input type="checkbox" name="车辆" value="车" >D2D<br>
+		
+		<label>指挥官<input type="radio" id="yes_radio" name="application" value="指挥官" onclick="singlechoose()" /></label>
+		<label>士兵<input type="radio" name="application" id="no_redio" value="士兵" checked onclick="singlechoose()" /></label><br>
+
+		<input list="company" id="companys" onchange="multichoose()">中继结点</input>
+		<datalist id="company">
+	        <option value="北斗">
+	        <option value="无人机">
+	        <option value="D2D">
+	    </datalist><br><br>
+	    <button id="submit" onclick="submit()">submit</button>
+	    <button id="reset" onclick="reset()">reset</button><br>
+	    <textarea class="textarea" id="text" >  </textarea><br>
+	</div>
+	<script type="text/javascript">
+	$("#test").hide();
+	var msg = "";
+	function multichoose(){
+		var input = $("#companys").val();
+		console.log("multichoose(): "+input)
+		msg += input;
+	}
+
+	function singlechoose(){
+		var group2 = $("input[name='application']:checked").val()==null||undefined?"0":$("input[name='application']:checked").val()
+
+		msg += group2;
+	}
+
+	function reset(){
+		var textarea =document.getElementById('text').value = "";
+		//$("#companys").val() = "";
+		$('input:radio[name=application]').attr('checked',false);
+		msg = "";
+	}
+
+	function multichoose2(){
+
+	}
+
+	function uploadfile(){
+        /**
+         * 上传函数
+         * @param fileInput DOM对象
+         * @param callback 回调函数
+         */
+        var getFileContent = function (fileInput, callback){
+            if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+                var file = fileInput.files[0];
+                if (window.FileReader) {
+                    var reader = new FileReader();
+                    reader.onloadend = function (evt) {
+                    if (evt.target.readyState == FileReader.DONE) {
+                            callback(evt.target.result);
+                        }
+                    };
+                    // 包含中文内容用gbk编码
+                    reader.readAsText(file, 'gbk');
+                }
+            }
+        };
+        /**
+         * upload内容变化时载入内容
+         */
+        document.getElementById('uploadfile').onchange = function () {
+            var content = document.getElementById('test');
+            getFileContent(this, function (str) {
+                content.value = str;
+                console.log(str)
+                });
+
+            };
+
+        }; 
+
+    function submit(){
+		var textarea =document.getElementById('text');
+		textarea.value = msg
+		console.log("msg: "+msg);
+	}   
+</script>
+    </body>
+</html>

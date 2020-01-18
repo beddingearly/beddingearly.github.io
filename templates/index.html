@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Profile" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- font files -->
+<!-- /font files -->
+<!-- css files -->
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all" />
+<!-- /css files -->
+<link href="../static/css/wickedpicker.css" rel="stylesheet" type='text/css' media="all" />
+<script type="text/javascript" src="../static/jquery-2.1.4.min.js">
+</script>
+</head>
+<body>
+	<div class="alert" id="alerting"></div>
+	<div class="w3-banner-main">
+		<div class="center-container">
+			<h1 class="header-w3ls">配 置 文 件</h1>
+			<div class="content-top">
+				<div class="content-w3ls">
+					<form id="form1" enctype="multipart/form-data" method="POST" action="/submit">
+					<div class="form-w3ls">
+							<div class="content-wthree1">
+								<div class="grid-agileits1">
+									<div class="form-control"> 
+										<label class="header">请输入北斗发射功率 </label>
+										<input type="text" id="name" name="name" placeholder="" title="Please enter your Full Name" required="">
+									</div>
+									
+									<div class="form-control">	
+										<label class="header">请输入指挥部发射功率 </label>
+										<input type="text" id="number" name="name" placeholder="" title="Please enter a Valid Email Address" required="">
+									</div>
+									
+									<div class="form-control"> 
+										<label class="header">请输入基站发射功率 </label>
+										<input type="text" id="energy" name="name" placeholder="" title="Please enter your Full Name" required="">
+									</div>
+
+									<div class="form-control">	
+										<label class="header">请输入领导者发射功率 </label>
+										<input type="text" id="energy_scope" name="phone number" placeholder="" title="Please enter your Phone Number" required="">
+									</div>					
+									<div class="form-control"> 
+										<label class="header">请输入士兵发射功率 </label>
+										<input type="text" id="speed" name="name" placeholder="" title="Please enter your Full Name" required="">
+									</div>	
+
+									<div class="grid-w3layouts1">
+								</div>
+								</div>
+							</div>
+					</div>
+					<div class="form-w3ls-1" >
+
+						<div class="form-control"> 
+							<!-- <label class="header">请输入最大速度 </label>
+							<input type="text" id="name" name="name" placeholder="" title="Please enter your Full Name" required=""> -->
+						</div>
+						<div class="form-control">
+								<label class="header">路由算法选择 </label>		
+									<select id="algo" class="form-control">
+										<option>Ours</option>
+										<option>DSDV</option>
+										<option>AODV</option>
+									</select>
+						</div>
+						<input id="uploadfile" type="file" value="" align="center"><br>
+						<textarea class="textarea" id="test" /></textarea><br>
+						<input type="submit" value="提交" id="mybtn" onclick="submitting()"><br><br>
+						<input type="submit" value="仿真模拟" id="mybtn1" disabled="disabled" onclick="btn1()">
+						<input type="submit" value="仿真结果" id="mybtn2" disabled="disabled" onclick="btn2()">
+						</form>
+					</div>				
+					<div class="clear"></div>
+				</div>
+			</div>
+				<p class="copyright">© 2019 IFun. All Rights Reserved </a></p>
+		</div>
+	</div>
+
+				<link rel="stylesheet" href="../static/css/jquery-ui.css" />
+				<script src="../static/jquery-ui.js"></script>
+				<script src="../static/jquery-form.js"></script>
+				<script src="../static/analyze_data.js"></script>
+			<script type="text/javascript">
+				//$('.timepicker').wickedpicker({twentyFour: false});
+				$("#alerting").show();
+				$('#test').hide();
+				window.onload = function() {
+					console.log("进入页面");
+					$("#mybtn1").attr('disabled',true);
+					$("#mybtn2").attr('disabled',true);
+					//console.log(TestValue);
+		            var getFileContent = function (fileInput, callback) {
+		                if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+		                    var file = fileInput.files[0];
+		                    if (window.FileReader) {
+		                        var reader = new FileReader();
+		                        reader.onloadend = function (evt) {
+		                            if (evt.target.readyState == FileReader.DONE) {
+		                                callback(evt.target.result);
+		                            }
+		                        };
+		                        // 包含中文内容用gbk编码
+		                        reader.readAsText(file, 'gbk');
+		                    }
+		                }
+		            };
+
+		            document.getElementById('uploadfile').onchange = function () {
+		                var content = document.getElementById('test');
+		                getFileContent(this, function (str) {
+		                    content.value = str;
+		                    });
+		                };
+		            };
+		            var radio = 0;
+		            //var v = '';
+		            function submitting(){
+		            	console.log("提交成功");
+		                $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+		                var name = $("#name").val();
+		                var number = $("#number").val();
+		                var energy = $("#energy").val();
+		                var energy_scope = $("#energy_scope").val();
+
+		                var algo = $("#algo option:selected").val();
+		                console.log(algo)
+
+		                console.log(radio)
+
+		                var test = document.getElementById('test').value;
+		                $("#alerting").attr("style","display:block;");//显示div
+
+		                $.getJSON($SCRIPT_ROOT+'/submit',{
+		                        submit: test
+		                    }, function (data) {
+		                        console.log("返回的结果为: "+data)
+		                           window.TestValue = data;
+		                           //alert("仿真进行中...")
+		                           $("#alerting").html('操作成功').addClass('alert-success').show().delay(3000)
+		                           $("#alerting").fadeOut();
+		                           // $('<div>').appendTo('body').addClass('alert alert-success').html('仿真进行中......').show()//.delay(3000).fadeOut();
+		                           // window.setTimeout("window.open('http://127.0.0.1:7000/analysis')", 4000);
+		                           $("#mybtn1").attr('disabled',false);
+		                           $("#mybtn2").attr('disabled',false);
+		                           $('<div>').fadeOut();
+		                           console.log("跳转成功")       
+		                    	});
+		        	}
+		        	
+		        	function checkk(){
+			            var radios = document.getElementsByName("selector1");
+			            for(var i=0;i<radios.length;i++){
+			                if(radios[i].checked == true){
+			                    radio = radios[i].value;
+			                }
+			            }
+			            console.log(radio);
+			        }
+
+			        function btn1(){
+			        	alert("可以点击了");
+			        }
+
+			        function btn2(){
+			        	alert("可以点击了");
+			        	window.open('http://127.0.0.1:7000/analysis');
+			        }
+
+
+			</script>
+			
+</body>
+</html>

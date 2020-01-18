@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        <link href="../static/1.css" rel="stylesheet">
+        <script src="../static/jquery-3.3.1.js"></script>
+        <script src="../static/jquery-form.js"></script>
+        
+    </head>
+    <body style="background-color: #CCECF9"> 
+        <div align="center">
+        <h1>科研助理平台</h1>    
+        <textarea class="textarea" id="test" >  </textarea>
+        <br/>
+                <form id="form1" enctype="multipart/form-data" method="post" action="${urlPath}/upload/toUploadFileView3">
+                <div class="row">
+                <label for="fileToUpload">Select a File to Upload</label>
+                <input type="file" name="upload" id="upload">
+            </div>
+            <div id="fileName"></div>
+            <div id="fileSize"></div>
+            <div id="fileType"></div>
+            <div id="fileimg"></div>
+            <div class="row">
+            </div>
+            <div id="progressNumber"></div>
+            
+        </form>
+        <div align="center">
+        <button type="submit" onclick="submit()" id='myBtn'>summit</button>
+        </div>
+        </div>
+
+        <script type="text/javascript">
+        	$("#test").hide();
+
+            window.onload = function() {
+            /**
+             * 上传函数
+             * @param fileInput DOM对象
+             * @param callback 回调函数
+             */
+            var getFileContent = function (fileInput, callback){
+                if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+                    var file = fileInput.files[0];
+                    if (window.FileReader) {
+                        var reader = new FileReader();
+                        reader.onloadend = function (evt) {
+                            if (evt.target.readyState == FileReader.DONE) {
+                                callback(evt.target.result);
+                            }
+                        };
+                        // 包含中文内容用gbk编码
+                        reader.readAsText(file, 'gbk');
+                    }
+                }
+            };
+            /**
+             * upload内容变化时载入内容
+             */
+            document.getElementById('upload').onchange = function () {
+                var content = document.getElementById('test');
+                getFileContent(this, function (str) {
+                    content.value = str;
+                    });
+                };
+            };
+            function submit(){
+                $SCRIPT_ROOT = {{request.script_root|tojson|safe}}
+                var test = document.getElementById('test').value;
+                $.getJSON($SCRIPT_ROOT+'/submit',{
+                        submit: test
+                    }, function (data) {
+                        console.log(data)
+
+                });
+            }
+        </script>
+    </body>
+</html>

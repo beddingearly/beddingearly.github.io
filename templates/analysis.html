@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>模拟数据分析</title>
+    <script src="../static/bootstrap.min.js"></script>
+    <script src="../static/jquery.min.js"></script>
+    <script src="../static/echarts.min.js"></script>
+</head>
+<style type="text/css">
+.myTable-container {
+	width: 800px;
+	height: 500px;
+}
+.mydynamic-container {
+	width: 1600px;
+	height: 800px;
+}
+</style>
+<body>
+
+	<div id="dynamic" class="mydynamic-container" style="padding-top: 0%; padding-left: 8%"></div>
+
+	<div class="container" style="padding-top: 10%; padding-left: 30%">
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane  active" id="tab1">
+				<div id="tab1-container" class="myTable-container"></div>
+			</div>
+			<div class="tab-pane " id="tab2">
+				<div id="tab2-container" class="myTable-container"></div>
+			</div>
+			<div class="tab-pane " id="tab3">
+				<div id="tab3-container" class="myTable-container"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script src="../static/analyze_data.js"></script>
+	<script>
+		var Ohref=window.location.href;
+		console.log(window.TestValue)
+
+		var $tab1 = document.getElementById('tab1-container');
+		var $tab2 = document.getElementById('tab2-container');
+		var $tab3 = document.getElementById('tab3-container');
+
+		var dom = document.getElementById("dynamic");
+		var myChart = echarts.init(dom);
+		var app = {};
+		option = null;
+		function randomData() {
+    		now = new Date(+now + oneDay);
+    		value = 0.5;
+    		return {
+        		name: now.toString(),
+        		value: [
+            		[now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+            		Math.round(value)
+        		]
+    		}
+		};
+
+		//初始化data
+		var data = [];
+		var now = +new Date(1997, 9, 3);
+		var oneDay = 24 * 3600 * 1000;
+		var value = Math.random() * 1000;
+		for (var i = 0; i < 1500; i++) {
+    		data.push(randomData());
+		}
+		option = {
+			//backgroundColor: '#0f375f',
+		    title: {
+		        text: '数据实时分析'
+		    },
+		    tooltip: {
+		        trigger: 'axis',
+		        formatter: function (params) {
+		            params = params[0];
+		            var date = new Date(params.name);
+		            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+		        },
+		        axisPointer: {
+		            animation: false
+		        }
+		    },
+		    xAxis: {
+		        type: 'time',
+		        splitLine: {
+		            show: false
+		        }
+		    },
+		    yAxis: {
+		        type: 'value',
+		        boundaryGap: [0, '100%'],
+		        splitLine: {
+		            show: false
+		        }
+		    },
+		    series: [{
+		        name: '模拟数据',
+		        type: 'line',
+		        showSymbol: false,
+		        hoverAnimation: false,
+		        data: data
+		    }]
+		};
+ 		xAxis_data = []
+		for (var i = 0; i < 90; i++) {
+    		xAxis_data.push(i);
+		}
+
+		/* 折线图 */
+		var tab1Option = {
+			title: {
+        		text: '路由算法对比',
+        		left: 'center'
+    		},
+			tooltip: {
+		        trigger: 'axis',
+		    },
+    		legend: {
+        		data: ['我们的算法', 'DSDV'],
+        		x : 'right'
+    		},
+    		grid: {
+		        top: 70,
+		        bottom: 50
+		    },
+			xAxis : {
+				name : '时间',
+				type : 'category',
+				data : xAxis_data
+			},
+			yAxis : {
+				name : '吞吐量',
+				type : 'value'
+			},
+			series : [ {
+				name:'我们的算法',
+				smooth: false,
+				data : [
+      0.0,
+      3244.0320,
+      3739.6480,
+      3792.8960,
+      3833.8560,
+      3837.9520,
+      3768.320,
+      3678.2080,
+      3833.8560,
+      3756.0320,
+      3760.1280,
+      3805.1840,
+      3850.240,
+      3854.3360,
+      3891.20,
+      3854.3360,
+      3772.4160,
+      3792.8960,
+      3801.0880,
+      3723.2640,
+      3768.320,
+      3772.4160,
+      3805.1840,
+      3764.2240,
+      3772.4160,
+      3821.5680,
+      3805.1840,
+      3743.7440,
+      3739.6480,
+      3751.9360,
+      3768.320,
+      3817.4720,
+      3809.280,
+      3702.7840,
+      3780.6080,
+      3842.0480,
+      3772.4160,
+      3739.6480,
+      3837.9520,
+      3768.320,
+      3796.9920,
+      3735.5520,
+      3764.2240,
+      3792.8960,
+      3833.8560,
+      3776.5120,
+      3751.9360,
+      3846.1440,
+      3788.80,
+      3821.5680,
+      3780.6080,
+      3756.0320,
+      3796.9920,
+      3694.5920,
+      3747.840,
+      3731.4560,
+      3764.2240,
+      3743.7440,
+      3813.3760,
+      3760.1280,
+      3829.760,
+      3801.0880,
+      3801.0880,
+      3792.8960,
+      3743.7440,
+      3776.5120,
+      3817.4720,
+      3780.6080,
+      3563.520,
+      3710.9760,
+      3760.1280,
+      3805.1840,
+      3731.4560,
+      3870.720,
+      3854.3360,
+      3772.4160,
+      3735.5520,
+      3817.4720,
+      3842.0480,
+      3788.80,
+      3764.2240,
+      3715.0720,
+      3788.80,
+      3821.5680,
+      3846.1440,
+      3739.6480,
+      3760.1280,
+      3833.8560,
+      3772.4160,
+      3846.1440
+   ],
+				type : 'line'
+			},
+			{
+				name:'DSDV',
+				smooth: false,
+				data : [
+      0.0,
+      3063.8080,
+      3878.9120,
+      3792.8960,
+      3817.4720,
+      3854.3360,
+      3842.0480,
+      3866.6240,
+      3780.6080,
+      3788.80,
+      3686.40,
+      3887.1040,
+      3842.0480,
+      3854.3360,
+      3788.80,
+      3809.280,
+      3694.5920,
+      3792.8960,
+      3825.6640,
+      3817.4720,
+      3866.6240,
+      3805.1840,
+      3821.5680,
+      3821.5680,
+      3821.5680,
+      3850.240,
+      3792.8960,
+      3817.4720,
+      3805.1840,
+      3768.320,
+      3649.5360,
+      3653.6320,
+      3850.240,
+      3760.1280,
+      3710.9760,
+      3833.8560,
+      3747.840,
+      3813.3760,
+      3866.6240,
+      3825.6640,
+      3829.760,
+      3776.5120,
+      3887.1040,
+      3825.6640,
+      3805.1840,
+      3858.4320,
+      3796.9920,
+      3760.1280,
+      3792.8960,
+      3801.0880,
+      3817.4720,
+      3743.7440,
+      3842.0480,
+      3833.8560,
+      3805.1840,
+      3874.8160,
+      3817.4720,
+      3887.1040,
+      3878.9120,
+      3854.3360,
+      3866.6240,
+      3784.7040,
+      3796.9920,
+      3809.280,
+      3854.3360,
+      3764.2240,
+      3760.1280,
+      3780.6080,
+      3813.3760,
+      3854.3360,
+      3756.0320,
+      3612.6720,
+      3235.840,
+      3203.0720,
+      3207.1680,
+      3141.6320,
+      3174.40,
+      3153.920,
+      3248.1280,
+      3223.5520,
+      3211.2640,
+      2723.840,
+      3354.6240,
+      3813.3760,
+      3825.6640,
+      3833.8560,
+      3821.5680,
+      3612.6720,
+      3481.60,
+      3461.120
+   ],
+				type : 'line'
+			}
+			]
+			
+		};
+		/* 饼图 */
+		var tab2Option = {
+    		tooltip: {
+		        trigger: 'item',
+		        formatter: "{a} <br/>{b}: {c} ({d}%)"
+		    },
+		    legend: {
+		        orient: 'vertical',
+		        x: 'left',
+		        data:['北斗','指挥部','基站','指挥官','A集团军','B集团军','C集团军','D集团军']
+		    },
+		    series: [
+		        {
+		            name:'访问来源',
+		            type:'pie',
+		            selectedMode: 'single',
+		            radius: [0, '30%'],
+
+		            label: {
+		                normal: {
+		                    position: 'inner'
+		                }
+		            },
+		            labelLine: {
+		                normal: {
+		                    show: false
+		                }
+		            },
+		            data:[
+		                {value:1, name:'北斗', selected:true},
+		                {value:1, name:'指挥部'},
+		                {value:2, name:'基站'},
+		              	{value:14, name:'集团军'}]
+		        	},
+		        {
+		            name:'访问来源',
+		            type:'pie',
+		            radius: ['40%', '55%'],
+		            label: {
+		                normal: {
+		                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+		                    backgroundColor: '#eee',
+		                    borderColor: '#aaa',
+		                    borderWidth: 1,
+		                    borderRadius: 4,
+		                    // shadowBlur:3,
+		                    // shadowOffsetX: 2,
+		                    // shadowOffsetY: 2,
+		                    // shadowColor: '#999',
+		                    // padding: [0, 7],
+		                    rich: {
+		                        a: {
+		                            color: '#999',
+		                            lineHeight: 22,
+		                            align: 'center'
+		                        },
+		                        // abg: {
+		                        //     backgroundColor: '#333',
+		                        //     width: '100%',
+		                        //     align: 'right',
+		                        //     height: 22,
+		                        //     borderRadius: [4, 4, 0, 0]
+		                        // },
+		                        hr: {
+		                            borderColor: '#aaa',
+		                            width: '100%',
+		                            borderWidth: 0.5,
+		                            height: 0
+		                        },
+		                        b: {
+		                            fontSize: 16,
+		                            lineHeight: 33
+		                        },
+		                        per: {
+		                            color: '#eee',
+		                            backgroundColor: '#334455',
+		                            padding: [2, 4],
+		                            borderRadius: 2
+		                        }
+		                    }
+		                }
+		            },
+		            data:[
+		            	{value:1, name:'北斗'},
+		            	{value:1, name:'指挥部'},
+		            	{value:2, name:'基站'},
+		                {value:4, name:'A集团军'},
+		                {value:3, name:'B集团军'},
+		                {value:3, name:'C集团军'},
+		                {value:4, name:'D集团军'}
+		            ]
+		        }
+		    ]
+		};
+		
+		/* 柱图  */
+		var tab3Option = {
+			tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        }
+		    },
+			xAxis : {
+				type : 'category',
+				data : [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ]
+			},
+			yAxis : {
+				type : 'value'
+			},
+			series : [ {
+				data : [ 120, 200, 150, 80, 70, 110, 130 ],
+				type : 'bar'
+			} ]
+		};
+ 
+		/* 初始化tab1的 */
+		var tab1Table = echarts.init($tab1);
+		tab1Table.setOption(tab1Option);
+
+		var tab2Table = echarts.init($tab2);
+ 		tab2Table.setOption(tab2Option);
+
+ 		var tab3Table = echarts.init($tab3);
+ 		tab3Table.setOption(tab3Option);
+
+ 		if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+
+	</script>
+</body>
+</html>
